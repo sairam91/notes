@@ -1,0 +1,6 @@
+README.md
+DEPLOYMENT.md
+.git
+.gitignore
+*.log
+frontend/node_modules

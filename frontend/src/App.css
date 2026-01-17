@@ -1,0 +1,61 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  gap: 15px;
+}
+
+.toolbar button {
+  padding: 8px 16px;
+  border: 1px solid #dee2e6;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.toolbar button:hover {
+  background-color: #e9ecef;
+}
+
+.save-btn {
+  background-color: #0d6efd !important;
+  color: white !important;
+  border-color: #0d6efd !important;
+}
+
+.save-btn:hover {
+  background-color: #0b5ed7 !important;
+}
+
+.canvas-name {
+  font-weight: 600;
+  flex: 1;
+  font-size: 16px;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.excalidraw-wrapper {
+  flex: 1;
+  height: 100%;
+}
