@@ -114,13 +114,33 @@ function App() {
     }
   };
 
+  const renameNote = () => {
+    if (!currentCanvas?.id) return;
+
+    const newName = prompt('Enter new note name:', currentCanvas.name);
+    if (!newName || newName === currentCanvas.name) return;
+
+    const updated = canvases.map(c =>
+      c.id === currentCanvas.id
+        ? { ...c, name: newName, updated_at: new Date().toISOString() }
+        : c
+    );
+    saveCanvasesToStorage(updated);
+    setCurrentCanvas({ ...currentCanvas, name: newName });
+  };
+
   return (
     <div className="app">
       <div className="toolbar">
         <button onClick={() => setShowSidebar(!showSidebar)}>
           {showSidebar ? '◀' : '▶'} Notes
         </button>
-        <span className="canvas-name">
+        <span
+          className="canvas-name"
+          onClick={renameNote}
+          style={{ cursor: currentCanvas ? 'pointer' : 'default' }}
+          title={currentCanvas ? 'Click to rename' : ''}
+        >
           {currentCanvas ? currentCanvas.name : 'Untitled Note'}
         </span>
       </div>
