@@ -86,3 +86,25 @@
 .delete-btn:hover {
   opacity: 1;
 }
+
+.new-note-btn-container {
+  padding: 15px;
+  border-top: 1px solid #dee2e6;
+}
+
+.new-note-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.new-note-btn:hover {
+  background-color: #0b5ed7;
+}

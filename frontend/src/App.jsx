@@ -15,6 +15,37 @@ function App() {
     loadCanvases();
   }, []);
 
+  // Auto-save functionality
+  useEffect(() => {
+    if (!excalidrawAPI) return;
+
+    const autoSave = () => {
+      if (!currentCanvas?.id) return;
+
+      const elements = excalidrawAPI.getSceneElements();
+      const appState = excalidrawAPI.getAppState();
+
+      const data = {
+        elements,
+        appState: {
+          viewBackgroundColor: appState.viewBackgroundColor,
+        },
+      };
+
+      const updated = canvases.map(c =>
+        c.id === currentCanvas.id
+          ? { ...c, data: JSON.stringify(data), updated_at: new Date().toISOString() }
+          : c
+      );
+      saveCanvasesToStorage(updated);
+    };
+
+    // Set up auto-save interval (every 2 seconds)
+    const intervalId = setInterval(autoSave, 2000);
+
+    return () => clearInterval(intervalId);
+  }, [excalidrawAPI, currentCanvas, canvases]);
+
   const loadCanvases = () => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -36,8 +67,11 @@ function App() {
     setCurrentCanvas({ id, name: canvas.name });
   };
 
-  const saveCanvas = () => {
+  const createNewNote = () => {
     if (!excalidrawAPI) return;
+
+    const name = prompt('Enter note name:');
+    if (!name) return;
 
     const elements = excalidrawAPI.getSceneElements();
     const appState = excalidrawAPI.getAppState();
@@ -49,34 +83,20 @@ function App() {
       },
     };
 
-    if (currentCanvas?.id) {
-      const updated = canvases.map(c =>
-        c.id === currentCanvas.id
-          ? { ...c, data: JSON.stringify(data), updated_at: new Date().toISOString() }
-          : c
-      );
-      saveCanvasesToStorage(updated);
-      alert('Note saved successfully!');
-    } else {
-      const name = prompt('Enter note name:');
-      if (!name) return;
+    const newCanvas = {
+      id: Date.now(),
+      name,
+      data: JSON.stringify(data),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
 
-      const newCanvas = {
-        id: Date.now(),
-        name,
-        data: JSON.stringify(data),
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-
-      const updated = [newCanvas, ...canvases];
-      saveCanvasesToStorage(updated);
-      setCurrentCanvas({ id: newCanvas.id, name });
-      alert('Note saved successfully!');
-    }
+    const updated = [newCanvas, ...canvases];
+    saveCanvasesToStorage(updated);
+    setCurrentCanvas({ id: newCanvas.id, name });
   };
 
-  const createNewCanvas = () => {
+  const startNewNote = () => {
     if (excalidrawAPI) {
       excalidrawAPI.resetScene();
     }
@@ -90,7 +110,7 @@ function App() {
     saveCanvasesToStorage(updated);
 
     if (currentCanvas?.id === id) {
-      createNewCanvas();
+      startNewNote();
     }
   };
 
@@ -101,12 +121,8 @@ function App() {
           {showSidebar ? '◀' : '▶'} Notes
         </button>
         <span className="canvas-name">
-          {currentCanvas ? currentCanvas.name : 'New Note'}
+          {currentCanvas ? currentCanvas.name : 'Untitled Note'}
         </span>
-        <div className="toolbar-actions">
-          <button onClick={createNewCanvas}>New Note</button>
-          <button onClick={saveCanvas} className="save-btn">Save Note</button>
-        </div>
       </div>
 
       <div className="main-content">
@@ -116,6 +132,7 @@ function App() {
             currentCanvasId={currentCanvas?.id}
             onLoadCanvas={loadCanvas}
             onDeleteCanvas={deleteCanvas}
+            onCreateNewNote={createNewNote}
           />
         )}
 

@@ -1,6 +1,6 @@
 import './CanvasList.css';
 
-function CanvasList({ canvases, currentCanvasId, onLoadCanvas, onDeleteCanvas }) {
+function CanvasList({ canvases, currentCanvasId, onLoadCanvas, onDeleteCanvas, onCreateNewNote }) {
   return (
     <div className="canvas-list">
       <div className="canvas-list-header">
@@ -43,6 +43,11 @@ function CanvasList({ canvases, currentCanvasId, onLoadCanvas, onDeleteCanvas })
             ))}
           </ul>
         )}
+      </div>
+      <div className="new-note-btn-container">
+        <button className="new-note-btn" onClick={onCreateNewNote}>
+          + New Note
+        </button>
       </div>
     </div>
   );
