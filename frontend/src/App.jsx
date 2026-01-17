@@ -3,7 +3,7 @@ import { Excalidraw } from '@excalidraw/excalidraw';
 import CanvasList from './components/CanvasList';
 import './App.css';
 
-const STORAGE_KEY = 'excalidraw_canvases';
+const STORAGE_KEY = 'excalidraw_notes';
 
 function App() {
   const [canvases, setCanvases] = useState([]);
@@ -56,9 +56,9 @@ function App() {
           : c
       );
       saveCanvasesToStorage(updated);
-      alert('Canvas saved successfully!');
+      alert('Note saved successfully!');
     } else {
-      const name = prompt('Enter canvas name:');
+      const name = prompt('Enter note name:');
       if (!name) return;
 
       const newCanvas = {
@@ -72,7 +72,7 @@ function App() {
       const updated = [newCanvas, ...canvases];
       saveCanvasesToStorage(updated);
       setCurrentCanvas({ id: newCanvas.id, name });
-      alert('Canvas saved successfully!');
+      alert('Note saved successfully!');
     }
   };
 
@@ -84,7 +84,7 @@ function App() {
   };
 
   const deleteCanvas = (id) => {
-    if (!confirm('Are you sure you want to delete this canvas?')) return;
+    if (!confirm('Are you sure you want to delete this note?')) return;
 
     const updated = canvases.filter(c => c.id !== id);
     saveCanvasesToStorage(updated);
@@ -98,14 +98,14 @@ function App() {
     <div className="app">
       <div className="toolbar">
         <button onClick={() => setShowSidebar(!showSidebar)}>
-          {showSidebar ? '◀' : '▶'} Canvases
+          {showSidebar ? '◀' : '▶'} Notes
         </button>
         <span className="canvas-name">
-          {currentCanvas ? currentCanvas.name : 'New Canvas'}
+          {currentCanvas ? currentCanvas.name : 'New Note'}
         </span>
         <div className="toolbar-actions">
-          <button onClick={createNewCanvas}>New Canvas</button>
-          <button onClick={saveCanvas} className="save-btn">Save Canvas</button>
+          <button onClick={createNewCanvas}>New Note</button>
+          <button onClick={saveCanvas} className="save-btn">Save Note</button>
         </div>
       </div>
 

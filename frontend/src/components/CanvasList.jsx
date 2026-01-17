@@ -4,12 +4,12 @@ function CanvasList({ canvases, currentCanvasId, onLoadCanvas, onDeleteCanvas })
   return (
     <div className="canvas-list">
       <div className="canvas-list-header">
-        <h3>My Canvases</h3>
+        <h3>My Notes</h3>
       </div>
       <div className="canvas-list-content">
         {canvases.length === 0 ? (
           <div className="empty-state">
-            No canvases yet. Create one!
+            No notes yet. Create one!
           </div>
         ) : (
           <ul>
@@ -35,7 +35,7 @@ function CanvasList({ canvases, currentCanvasId, onLoadCanvas, onDeleteCanvas })
                     e.stopPropagation();
                     onDeleteCanvas(canvas.id);
                   }}
-                  title="Delete canvas"
+                  title="Delete note"
                 >
                   🗑️
                 </button>
